@@ -12,7 +12,7 @@ from functions import predict
 
 app = Flask(__name__)
 
-@app.route("/predict", methods=['POST'])
+@app.route("/hello", methods=['POST'])
 def hello():
     print('Hello')
 
