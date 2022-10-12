@@ -13,6 +13,11 @@ from functions import predict
 app = Flask(__name__)
 
 @app.route("/predict", methods=['POST'])
+def hello():
+    print('Hello')
+
+
+@app.route("/predict", methods=['POST'])
 def get_prediction():
     idx = request.get_json()
     rep, proba = predict(idx, df_test, best_model, thres, scaler)
