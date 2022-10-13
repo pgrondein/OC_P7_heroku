@@ -12,11 +12,9 @@ from functions import predict
 
 app = Flask(__name__)
 
-@app.route("/hello", methods=['GET'])
-def helloworld():
-    if(request.method == 'GET'):
-        data = {"data": "Hello World"}
-        return jsonify(data)
+@app.route('/')
+def index():
+    return 'Projet 7 - Implémentez un modèle de scoring'
 
 
 @app.route("/predict", methods=['POST'])
