@@ -25,7 +25,7 @@ app = Flask(__name__)
 def index():
     return 'Projet 7 - Implémentez un modèle de scoring'
 
-@app.route("/predict", methods=['POST'])
+@app.route("/predict", methods=['POST', 'GET'])
 def get_prediction():
     idx = request.get_json()
     
