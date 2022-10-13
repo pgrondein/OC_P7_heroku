@@ -1,5 +1,5 @@
 dill==0.3.5.1
-Flask==1.1.2
+Flask==2.1.0
 Flask-Compress==1.13
 gunicorn==20.1.0
 json5==0.9.6
