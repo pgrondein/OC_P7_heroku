@@ -95,9 +95,7 @@ def local_css(file_name):
     with open(file_name) as f:
         st.markdown('<style>{}</style>'.format(f.read()), unsafe_allow_html=True)
 
-def predict(idx, df_test, best_model, thres, scaler) :
-    #Récupération de la demande de prêt
-    ind = np.array(df_test.loc[idx]).reshape(1,-1)
+def predict(ind, best_model, scaler, thres) :
     #Calcul de la probabilité d'un rejet
     pipe = Pipeline([('scaler', scaler), ('model', best_model)])
     proba = float(pipe.predict_proba(ind)[:,1])

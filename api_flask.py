@@ -1,51 +1,37 @@
 # -*- coding: utf-8 -*-
 
-import pandas as pd
 import dill as pickle
 import json
 from flask import Flask, jsonify, request
 from functions import predict
+import numpy as np
 
 app = Flask(__name__)
-
-
-# #chargement du scaler entraîné
-# scaler = pickle.load(open('MinMaxScaler_LR.sav', 'rb'))
-# #chargement des données Test
-# df_test = pd.read_csv('df_test.csv').drop('Unnamed: 0', axis = 1)
-# df_test = df_test.set_index('SK_ID_CURR')
-# #chargement du meilleur modèle
-# best_model = pickle.load(open('LR_clf.sav', 'rb'))
-# #chargement du palier de probabilité
-# f = open('LR_params.json')
-# thres_dict = json.load(f)
-# thres = thres_dict['Threshold']
+best_model = pickle.load(open('LR_clf.sav', 'rb')) 
+f = open('LR_params.json')
+thres_dict = json.load(f)
+thres = thres_dict['Threshold']
+scaler = pickle.load(open('MinMaxScaler_LR.sav', 'rb'))
 
 @app.route('/')
 def index():
     return 'Projet 7 - Implémentez un modèle de scoring'
 
-@app.route("/predict", methods=['POST', 'GET'])
+@app.route("/predict", methods=['POST'])
 def get_prediction():
-    idx = request.get_json()
-    
-    scaler = pickle.load(open('MinMaxScaler_LR.sav', 'rb'))
-    df_test = pd.read_csv('df_test.csv').drop('Unnamed: 0', axis = 1)
-    df_test = df_test.set_index('SK_ID_CURR')
-    best_model = pickle.load(open('LR_clf.sav', 'rb'))
-    f = open('LR_params.json')
-    thres_dict = json.load(f)
-    thres = thres_dict['Threshold']
-    
-    rep, proba = predict(idx, df_test, best_model, thres, scaler)
+    ind = request.form.to_dict()
+    ind = list(ind.values())
+    ind = list(map(float, ind))
+    ind = np.array(ind).reshape(1, -1)
+    rep, proba = predict(ind, best_model, scaler, thres)
     d = {
         'rep' : rep,
         'proba' : proba
         }
  
-    return jsonify(d)
+    return (d)
  
-# if __name__ == '__main__':
+if __name__ == '__main__':
     
-#     app.run(debug=True, host='0.0.0.0')
-#     app.run()
+     app.run(debug=True, host='0.0.0.0')
+    # app.run()
