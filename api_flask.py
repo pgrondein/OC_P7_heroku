@@ -1,9 +1,5 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Fri Oct  7 11:17:07 2022
 
-@author: Pask
-"""
 import pandas as pd
 import dill as pickle
 import json
@@ -15,7 +11,6 @@ app = Flask(__name__)
 @app.route('/')
 def index():
     return 'Projet 7 - Implémentez un modèle de scoring'
-
 
 @app.route("/predict", methods=['POST'])
 def get_prediction():
@@ -42,4 +37,5 @@ if __name__ == '__main__':
     thres = thres_dict['Threshold']
     
     
-    app.run(debug=True, host='0.0.0.0')
+    # app.run(debug=True, host='0.0.0.0')
+    app.run()
