@@ -9,17 +9,17 @@ from functions import predict
 app = Flask(__name__)
 
 
-#chargement du scaler entraîné
-scaler = pickle.load(open('MinMaxScaler_LR.sav', 'rb'))
-#chargement des données Test
-df_test = pd.read_csv('df_test.csv').drop('Unnamed: 0', axis = 1)
-df_test = df_test.set_index('SK_ID_CURR')
-#chargement du meilleur modèle
-best_model = pickle.load(open('LR_clf.sav', 'rb'))
-#chargement du palier de probabilité
-f = open('LR_params.json')
-thres_dict = json.load(f)
-thres = thres_dict['Threshold']
+# #chargement du scaler entraîné
+# scaler = pickle.load(open('MinMaxScaler_LR.sav', 'rb'))
+# #chargement des données Test
+# df_test = pd.read_csv('df_test.csv').drop('Unnamed: 0', axis = 1)
+# df_test = df_test.set_index('SK_ID_CURR')
+# #chargement du meilleur modèle
+# best_model = pickle.load(open('LR_clf.sav', 'rb'))
+# #chargement du palier de probabilité
+# f = open('LR_params.json')
+# thres_dict = json.load(f)
+# thres = thres_dict['Threshold']
 
 @app.route('/')
 def index():
@@ -28,6 +28,15 @@ def index():
 @app.route("/predict", methods=['POST'])
 def get_prediction():
     idx = request.get_json()
+    
+    scaler = pickle.load(open('MinMaxScaler_LR.sav', 'rb'))
+    df_test = pd.read_csv('df_test.csv').drop('Unnamed: 0', axis = 1)
+    df_test = df_test.set_index('SK_ID_CURR')
+    best_model = pickle.load(open('LR_clf.sav', 'rb'))
+    f = open('LR_params.json')
+    thres_dict = json.load(f)
+    thres = thres_dict['Threshold']
+    
     rep, proba = predict(idx, df_test, best_model, thres, scaler)
     d = {
         'rep' : rep,
